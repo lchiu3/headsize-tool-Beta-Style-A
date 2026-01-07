@@ -7,7 +7,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
@@ -15,49 +15,52 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic/holistic.js" crossorigin="anonymous"></script>
 
     <style>
+        /* --- BENTO THEME VARIABLES --- */
         :root {
-            /* Palette based on reference */
-            --bg-body: #050505;
-            --card-base: #FFF9C4; /* Creamy Pastel Yellow */
-            --accent-purple: #C7D2FE;
-            --accent-blob: #E0E7FF;
-            --text-main: #111827;
-            --text-sub: #4b5563;
-            --btn-bg: #111827;
-            --btn-text: #ffffff;
-            --highlight: #F59E0B; /* Marigold */
-            --success: #059669;
-            --danger: #DC2626;
+            /* Palette extracted from reference */
+            --bg-dark: #132A13;       /* Deep Forest Green */
+            --card-cream: #F9F8F2;    /* Main Card */
+            --card-yellow: #FFE86E;   /* Highlight / Welcome */
+            --card-green: #D4F5B2;    /* Instructions */
+            --card-lilac: #E0D6FF;    /* Calibration */
+            --card-peach: #FADAC9;    /* Results */
             
-            --font-stack: "Poppins", "Brown", "Futura", "Josefin Sans", "M Sans", sans-serif;
-            --font-display: "Josefin Sans", "Futura", "Brown", sans-serif;
+            --text-main: #000000;
+            --text-muted: #4b5563;
+            
+            --accent-purple: #6366f1;
+            --danger: #ef4444;
+            --success: #059669; /* Darker green for UI elements */
+            --warning: #f59e0b;
+
+            --radius-lg: 40px; /* Heavy rounding per reference */
+            --radius-md: 20px;
+            --border-width: 2px;
         }
 
         body {
-            font-family: var(--font-stack);
-            background-color: var(--bg-body);
+            font-family: 'Josefin Sans', 'Poppins', 'Brown', 'Futura', 'M Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
             overflow: hidden;
-            color: var(--text-main);
         }
 
-        /* The Main Card */
+        /* --- CONTAINER / CARD STYLES --- */
         .container {
-            width: 95%;
+            width: 90%;
             max-width: 1200px;
             aspect-ratio: 16/9;
             max-height: 90vh;
-            background-color: var(--card-base);
-            /* Creating the wave/organic look using radial gradients */
-            background-image: 
-                radial-gradient(circle at 0% 0%, var(--accent-purple) 0%, transparent 40%),
-                radial-gradient(circle at 100% 100%, #d1fae5 0%, transparent 40%);
-            border-radius: 40px; /* Super rounded corners like reference */
-            box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.1); /* Subtle glowing border effect */
+            /* Default to Cream, but specific steps will change this */
+            background: var(--card-cream); 
+            border-radius: var(--radius-lg);
+            /* Minimal shadow, flat aesthetic */
+            box-shadow: 0 0 0 0 rgba(0,0,0,0); 
             padding: 40px; 
             box-sizing: border-box;
             display: flex;
@@ -66,43 +69,30 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        /* Add a "Unified" branding tag purely for style match */
-        .container::before {
-            content: 'Unified™';
-            position: absolute;
-            top: 30px;
-            left: 40px;
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 1rem;
-            opacity: 0.6;
-            z-index: 10;
-            pointer-events: none;
+            transition: all 0.4s ease-in-out;
         }
 
         .container.camera-mode {
             padding: 0;
             background: #000;
-            border-radius: 20px;
+            border: 4px solid var(--card-cream); /* Add border to camera view to keep style */
         }
 
-        /* Typography */
+        /* --- TYPOGRAPHY --- */
         h1 { 
-            font-family: var(--font-display);
+            font-family: 'Josefin Sans', sans-serif;
             font-size: 3.5rem; 
             color: var(--text-main); 
             margin-bottom: 20px; 
             font-weight: 700; 
-            text-align: center; 
+            text-align: center;
+            letter-spacing: -1px; 
             line-height: 1.1;
-            letter-spacing: -1px;
         }
         
         p { 
-            color: var(--text-sub); 
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-main); 
             font-size: 1.3rem; 
             line-height: 1.6; 
             margin-bottom: 40px; 
@@ -111,33 +101,32 @@
             font-weight: 400;
         }
 
-        /* Buttons - Black Pill Shape */
+        b { font-weight: 700; }
+
+        /* --- BUTTONS (Ref: Circular arrow buttons or Pills) --- */
         .btn {
-            background-color: var(--btn-bg); 
-            color: var(--btn-text); 
-            border: 2px solid var(--btn-bg); 
-            padding: 18px 42px;
+            background-color: var(--text-main); 
+            color: #fff; 
+            border: none; 
+            padding: 18px 40px;
             border-radius: 50px; /* Pill shape */
-            font-size: 1.1rem; 
+            font-size: 1.2rem; 
             cursor: pointer; 
             font-weight: 600;
-            font-family: var(--font-stack);
-            transition: all 0.3s ease; 
+            transition: all 0.2s; 
             margin: 10px; 
             display: inline-flex; 
             align-items: center; 
-            gap: 10px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            gap: 12px;
+            font-family: 'Poppins', sans-serif;
         }
         
         .btn:hover { 
-            transform: translateY(-5px); 
-            background-color: transparent;
-            color: var(--btn-bg);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transform: scale(1.05); 
+            opacity: 0.9;
         }
         
-        .btn span { font-size: 1.3em; line-height: 0.5; }
+        .btn span { font-size: 1.4rem; }
 
         .btn-outline { 
             background: transparent; 
@@ -145,190 +134,244 @@
             color: var(--text-main); 
         }
 
-        /* Steps Animation */
-        .step { display: none; width: 100%; height: 100%; flex-direction: column; align-items: center; justify-content: center; animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-        .step.active { display: flex; }
+        /* --- STEP SPECIFIC THEMES (Matching the Bento Reference) --- */
         
-        @keyframes slideUp { 
-            from { opacity: 0; transform: translateY(40px); } 
-            to { opacity: 1; transform: translateY(0); } 
+        /* 1. Welcome -> Yellow Card */
+        #step-welcome.active ~ .container, 
+        .container:has(#step-welcome.active) {
+            background-color: var(--card-yellow);
         }
 
-        /* Form Elements */
-        .gender-options { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;}
-        .ipd-input-group { margin-top: 20px; display: none; text-align: center; animation: slideUp 0.4s ease; }
+        /* 2. Calibration -> Lilac Card */
+        .container:has(#step-calib.active) {
+            background-color: var(--card-lilac);
+        }
+
+        /* 3. Instructions -> Green Card */
+        .container:has(#step-instr-breadth.active),
+        .container:has(#step-instr-height.active) {
+            background-color: var(--card-green);
+        }
+
+        /* 4. Results -> Peach Card */
+        #final-overlay {
+            background-color: var(--card-peach) !important;
+        }
+
+
+        /* --- LAYOUT LOGIC --- */
+        .step { 
+            display: none; 
+            width: 100%; 
+            height: 100%; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            animation: fadeIn 0.4s ease; 
+        }
+        .step.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .gender-options { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+        .ipd-input-group { margin-top: 20px; display: none; text-align: center; }
         .ipd-input-group input { 
-            background: rgba(255,255,255,0.5);
             padding: 15px; 
             border: 2px solid var(--text-main); 
+            background: rgba(255,255,255,0.5);
             border-radius: 16px; 
             width: 120px; 
             text-align: center; 
-            font-size: 1.4rem; 
+            font-size: 1.5rem; 
             display: block; 
             margin: 10px auto; 
-            font-family: var(--font-display);
-            font-weight: bold;
-            outline: none;
+            font-family: 'Josefin Sans', sans-serif;
+            font-weight: 700;
         }
 
-        /* Decorative Graphics Redesign */
+        /* --- GRAPHICS (Line Art Style) --- */
         .instruction-graphic {
-            width: 260px; height: 260px; 
-            background: #fff; /* White circle on yellow card */
+            width: 220px; 
+            height: 220px; 
+            background: rgba(255,255,255,0.4); 
+            border: 2px solid var(--text-main); /* Line art border */
             border-radius: 50%;
             margin: 20px auto; 
             position: relative; 
-            display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
         }
         
         .head-shape { 
-            width: 130px; height: 160px; 
-            border: 4px solid var(--text-main); /* Black border */
-            border-radius: 60px; 
-            background: transparent; 
+            width: 110px; 
+            height: 140px; 
+            border: 3px solid var(--text-main); /* Thick lines */
+            border-radius: 45px; 
+            background: white; 
             position: relative;
         }
         
         .finger-dot { 
-            width: 24px; height: 24px; 
-            background: var(--highlight); /* Pop color */
-            border: 2px solid #fff;
+            width: 24px; 
+            height: 24px; 
+            background: var(--danger); 
+            border: 2px solid white;
             border-radius: 50%; 
             position: absolute; 
             z-index: 5;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-       
-        .g-breadth .left-finger { top: 50%; left: -40px; transform: translateY(-50%); }
-        .g-breadth .right-finger { top: 50%; right: -40px; transform: translateY(-50%); }
+        
+        .g-breadth .left-finger { top: 50%; left: -35px; transform: translateY(-50%); }
+        .g-breadth .right-finger { top: 50%; right: -35px; transform: translateY(-50%); }
         .g-breadth .arrow-line { 
-            position: absolute; top: 50%; left: -25px; right: -25px; height: 2px; 
-            background: var(--text-main); z-index: 1; 
-            border-radius: 2px;
+            position: absolute; top: 50%; left: -25px; right: -25px; 
+            height: 3px; background: var(--text-main); z-index: 1; 
         }
-       
-        .g-height .side-finger { top: 50%; right: -40px; transform: translateY(-50%); }
+        
+        .g-height .side-finger { top: 50%; right: -35px; transform: translateY(-50%); }
         .g-height .top-palm { 
-            top: -30px; left: 50%; transform: translateX(-50%);
-            width: 80px; height: 16px; 
-            background: var(--highlight); 
-            border: 2px solid #fff;
-            border-radius: 10px; position: absolute; z-index: 5;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            top: -25px; left: 50%; transform: translateX(-50%);
+            width: 60px; height: 16px; 
+            background: var(--danger); 
+            border: 2px solid white;
+            border-radius: 10px; 
+            position: absolute; 
+            z-index: 5;
         }
         .g-height .arrow-line-vert { 
-            position: absolute; top: -25px; bottom: 50%; right: -25px; width: 2px; 
-            background: transparent; border-right: 2px dashed var(--text-main); z-index: 1; 
+            position: absolute; top: -25px; bottom: 50%; right: -25px; 
+            width: 0px; 
+            border-right: 3px dashed var(--text-main); z-index: 1; 
         }
 
-        /* Camera View - Modern & Clean */
+        /* --- CAMERA VIEW UI --- */
         .camera-container {
             position: relative; width: 100%; height: 100%; 
-            border-radius: inherit;
+            border-radius: 28px; /* Inner radius matching outer */
             overflow: hidden; background: #000;
         }
-        video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); opacity: 0.9; }
+        video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
         canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: scaleX(-1); }
-       
-        /* LEFT SIDE PANEL - Floating Glass */
+        
+        /* LEFT SIDE PANEL */
         .ui-left-panel {
             position: absolute; top: 40px; left: 40px;
-            width: 320px; 
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(12px);
-            padding: 25px;
-            border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.1);
-            display: flex; flex-direction: column; align-items: flex-start;
-            gap: 10px; z-index: 50; pointer-events: none;
+            width: 350px; display: flex; flex-direction: column; align-items: flex-start;
+            gap: 15px; z-index: 50; pointer-events: none;
         }
 
-        .instruction-banner h2 { 
-            margin: 0; font-size: 1.8rem; font-weight: 700; 
-            color: #fff; text-align: left; letter-spacing: 0;
+        .instruction-banner {
+            background: var(--card-cream);
+            padding: 20px 30px; 
+            border-radius: 20px;
+            text-align: left; 
+            color: var(--text-main); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s;
         }
+        
+        .instruction-banner.active-step { background: var(--card-yellow); }
+        
+        .instruction-banner h2 { 
+            margin: 0; font-size: 1.8rem; 
+            font-weight: 700; color: var(--text-main); 
+            text-align: left;
+        }
+        
         .instruction-banner p { 
             margin: 5px 0 0 0; font-size: 1rem; 
-            color: rgba(255,255,255,0.8); text-align: left; 
+            color: var(--text-main); text-align: left; 
         }
 
         /* Warning Pill */
         .status-pill {
-            position: absolute; bottom: 100px; left: 50%; transform: translate(-50%, 0); 
-            background: #fff; color: var(--danger); 
-            padding: 12px 32px;
+            position: absolute; bottom: 40px; left: 50%; transform: translate(-50%, 0); 
+            background: var(--text-main); color: white; padding: 12px 32px;
             border-radius: 50px; font-size: 1.2rem; opacity: 0; transition: opacity 0.3s; 
-            font-weight: 700; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); white-space: nowrap;
-            z-index: 60;
+            font-weight: 600; white-space: nowrap; z-index: 60;
         }
-        .status-pill.visible { opacity: 1; transform: translate(-50%, -10px); }
+        .status-pill.visible { opacity: 1; }
 
-        /* Level Gauge */
+        /* RIGHT SIDE PANEL (Level) */
         .level-gauge {
-            position: absolute; bottom: 40px; right: 40px; top: auto; transform: none;
+            position: absolute; top: 40px; right: 40px;
             width: 120px; height: 120px; 
-            background: rgba(255,255,255,0.1); 
+            background: rgba(255,255,255,0.2); 
             border-radius: 50%; 
-            border: 2px solid rgba(255,255,255,0.3); 
+            border: 3px solid rgba(255,255,255,0.6); 
             display: flex; justify-content: center; align-items: center; 
             backdrop-filter: blur(8px); z-index: 50; 
         }
-        .level-inner-ring { width: 40px; height: 40px; border: 2px solid rgba(255,255,255,0.5); border-radius: 50%; position: absolute; }
-        .level-bubble { width: 20px; height: 20px; background-color: var(--highlight); border-radius: 50%; position: absolute; transition: all 0.1s linear; }
-        .level-label { position: absolute; top: -30px; width: 100%; text-align: center; color: white; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-        
-        .level-gauge.balanced { border-color: var(--success); background: rgba(5, 150, 105, 0.2); }
+        .level-inner-ring { 
+            width: 40px; height: 40px; 
+            border: 3px solid rgba(255,255,255,0.8); 
+            border-radius: 50%; position: absolute; 
+            top: 50%; left: 50%; transform: translate(-50%, -50%); 
+        }
+        .level-bubble { 
+            width: 20px; height: 20px; 
+            background-color: var(--warning); 
+            border-radius: 50%; position: absolute; 
+            top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            transition: all 0.1s linear; 
+        }
+        .level-label { 
+            position: absolute; bottom: -30px; width: 100%; 
+            text-align: center; color: white; 
+            font-size: 0.9rem; font-weight: 600; 
+            background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 12px;
+        }
+        .level-gauge.balanced { border-color: var(--success); }
         .level-gauge.balanced .level-bubble { background-color: var(--success); }
+        .level-gauge.balanced .level-inner-ring { border-color: var(--success); }
 
-        /* Ghost Overlay */
+        /* GHOST OVERLAY */
         .ghost-overlay {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 320px; height: 480px; border-radius: 500px; /* Capsule shape */
-            border: 4px dashed rgba(255, 255, 255, 0.4);
-            z-index: 10; box-shadow: 0 0 0 9999px rgba(0,0,0,0.7); transition: all 0.2s;
+            width: 320px; height: 480px; border-radius: 999px; 
+            border: 6px dashed rgba(255, 255, 255, 0.4);
+            z-index: 10; box-shadow: 0 0 0 9999px rgba(19, 42, 19, 0.75); /* Dark Green Overlay */
+            transition: all 0.2s;
         }
-       
+        
         .crosshair {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 30px; height: 30px; z-index: 15;
-            opacity: 0.6;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; z-index: 15;
         }
-        .crosshair::before, .crosshair::after { content: ''; position: absolute; background: #fff; border-radius: 2px;}
-        .crosshair::before { top: 13px; left: 0; width: 30px; height: 4px; }
-        .crosshair::after { top: 0; left: 13px; width: 4px; height: 30px; }
-       
+        .crosshair::before, .crosshair::after { content: ''; position: absolute; background: white; border-radius: 2px;}
+        .crosshair::before { top: 18px; left: 0; width: 40px; height: 4px; }
+        .crosshair::after { top: 0; left: 18px; width: 4px; height: 40px; }
+        
         .countdown-overlay {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-family: var(--font-display);
-            font-size: 12rem; color: #fff; font-weight: 700; 
+            font-size: 12rem; color: white; font-weight: 800; font-family: 'Josefin Sans';
             z-index: 100; display: none;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* Results Overlay - Clean White Card */
+        /* --- RESULTS OVERLAY (Peach Theme) --- */
         .result-overlay {
             position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: #fff; display: flex; flex-direction: column;
+            background: var(--card-peach); /* Peach Background */
+            display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 150; display: none;
-            padding: 40px;
         }
+        
         .result-category {
-            font-family: var(--font-display);
             font-size: 5rem; 
             color: var(--text-main); 
-            font-weight: 800; margin-bottom: 10px;
-            text-transform: uppercase; letter-spacing: -2px;
-            background: linear-gradient(135deg, var(--text-main), var(--text-sub));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-weight: 800; 
+            margin-bottom: 20px;
+            text-transform: uppercase; 
+            font-family: 'Josefin Sans';
+            line-height: 1;
         }
-        .result-row { display: flex; gap: 60px; margin: 40px 0; }
+        
+        .result-row { display: flex; gap: 40px; margin: 30px 0; background: rgba(255,255,255,0.3); padding: 20px 40px; border-radius: 30px;}
         .result-item { text-align: center; }
-        .result-label { font-size: 1rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 5px;}
-        .result-val { font-size: 3rem; font-weight: 700; color: var(--text-main); font-family: var(--font-display); }
+        .result-label { font-size: 1.1rem; color: var(--text-main); opacity: 0.7; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
+        .result-val { font-size: 3rem; font-weight: 700; color: var(--text-main); font-family: 'Josefin Sans';}
 
         .loader {
-            border: 5px solid rgba(255,255,255,0.1); border-top: 5px solid #fff;
+            border: 5px solid rgba(255,255,255,0.3); border-top: 5px solid white;
             border-radius: 50%; width: 50px; height: 50px;
             animation: spin 1s linear infinite; display: none; margin: 20px auto;
         }
@@ -341,47 +384,51 @@
 <div class="container" id="mainContainer">
     
     <div id="step-welcome" class="step active">
-        <h1>Headphone Sizing</h1>
-        <p>Let's find your perfect fit. We'll measure your <b>Head Breadth</b> and <b>Height</b> using your webcam.</p>
+        <h1>Headphone<br>Sizing Tool</h1>
+        <p>The method is very good, no mis-understandings that cannot be resolved.</p>
         <button class="btn" onclick="nextStep('step-calib')">Get Started <span>&rarr;</span></button>
     </div>
 
     <div id="step-calib" class="step">
         <h1>Calibration</h1>
-        <p>To ensure accuracy, we need your average eye distance (IPD).</p>
+        <p>We need your average eye distance (IPD) to scale the image accurately.</p>
         <div class="gender-options">
-            <button class="btn" onclick="setIPD(64, 'Male')">Male Avg</button>
-            <button class="btn" onclick="setIPD(62, 'Female')">Female Avg</button>
-            <button class="btn btn-outline" onclick="document.getElementById('customIPDGroup').style.display = 'block'">Custom</button>
+            <button class="btn" onclick="setIPD(64, 'Male')">Male (64mm)</button>
+            <button class="btn" onclick="setIPD(62, 'Female')">Female (62mm)</button>
+            <button class="btn btn-outline" style="border-color:black; color:black;" onclick="document.getElementById('customIPDGroup').style.display = 'block'">Custom</button>
         </div>
         <div class="ipd-input-group" id="customIPDGroup">
             <input type="number" id="manualIPD" value="63" placeholder="mm">
-            <button class="btn" onclick="setIPD(document.getElementById('manualIPD').value, 'Custom')">Next Step</button>
+            <button class="btn" onclick="setIPD(document.getElementById('manualIPD').value, 'Custom')">Next</button>
         </div>
     </div>
 
     <div id="step-instr-breadth" class="step">
-        <h1>Part 1: Breadth</h1>
+        <h1>Part 1: Head Breadth</h1>
         <div class="instruction-graphic g-breadth">
             <div class="head-shape"></div>
             <div class="finger-dot left-finger"></div>
             <div class="finger-dot right-finger"></div>
             <div class="arrow-line"></div>
         </div>
-        <p>Place your <b>Index Fingers</b> on both ear bumps (Tragus). Look straight ahead.</p>
-        <button class="btn" onclick="startMeasurement('breadth')">Start Camera</button>
+        <p>1. Place your <b>Index Fingers</b> on both <b>Tragus</b> (ear bumps).<br>
+           2. Use the <b>Bubble Level</b> to balance your head.<br>
+           3. Look straight at the camera.</p>
+        <button class="btn" onclick="startMeasurement('breadth')">Start Breadth Measure</button>
     </div>
 
     <div id="step-instr-height" class="step">
-        <h1>Part 2: Height</h1>
+        <h1>Part 2: Head Height</h1>
         <div class="instruction-graphic g-height">
             <div class="head-shape"></div>
             <div class="finger-dot side-finger"></div>
             <div class="top-palm"></div>
             <div class="arrow-line-vert"></div>
         </div>
-        <p>Place one finger on your ear bump and press your <b>Flat Palm</b> on top of your head.</p>
-        <button class="btn" onclick="startMeasurement('height')">Start Camera</button>
+        <p>1. Place one finger on your <b>Tragus</b>.<br>
+           2. Press your <b>Flat Palm</b> firmly on the <b>Top of your Head</b>.<br>
+           3. Center the <b>Bubble Level</b>.</p>
+        <button class="btn" onclick="startMeasurement('height')">Start Height Measure</button>
     </div>
 
     <div id="step-camera" class="step">
@@ -394,9 +441,9 @@
             <div class="crosshair" id="crosshair"></div>
             
             <div class="level-gauge" id="level-gauge">
-                <div class="level-label">Balance</div>
                 <div class="level-inner-ring"></div>
                 <div class="level-bubble" id="level-bubble"></div>
+                <div class="level-label">Balance</div>
             </div>
 
             <div class="ui-left-panel">
@@ -411,26 +458,26 @@
             <div class="countdown-overlay" id="countdown">3</div>
 
             <div id="interstitial-overlay" class="result-overlay">
-                <div class="result-label">Breadth Recorded</div>
-                <div class="result-val" id="temp-result" style="font-size: 5rem; margin: 20px 0;">-- mm</div>
-                <button class="btn" style="margin-top:20px;" onclick="nextStep('step-instr-height')">Continue to Height</button>
+                <div class="result-label">Head Breadth Recorded</div>
+                <div class="result-val" id="temp-result" style="font-size: 6rem;">-- mm</div>
+                <button class="btn" style="margin-top:30px; background: black; color: white;" onclick="nextStep('step-instr-height')">Continue to Height</button>
             </div>
 
             <div id="final-overlay" class="result-overlay">
-                <div class="result-label">Your Size</div>
+                <div class="result-label" style="color:black;">Result Category</div>
                 <div class="result-category" id="final-category">--</div>
                
                 <div class="result-row">
                     <div class="result-item">
-                        <div class="result-label">Breadth</div>
+                        <div class="result-label" style="color:black;">Breadth</div>
                         <div class="result-val" id="final-breadth">--</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-label">Height</div>
+                        <div class="result-label" style="color:black;">Height</div>
                         <div class="result-val" id="final-height">--</div>
                     </div>
                 </div>
-                <button class="btn" onclick="location.reload()">Measure Again</button>
+                <button class="btn" style="background: black; color: white;" onclick="location.reload()">Measure Again</button>
             </div>
         </div>
     </div>
@@ -528,7 +575,7 @@
         ui.interstitial.style.display = 'none';
         ui.final.style.display = 'none';
         ui.crosshair.style.opacity = '0.5';
-        ui.ghost.style.borderColor = 'rgba(255,255,255,0.5)';
+        ui.ghost.style.borderColor = 'rgba(255,255,255,0.4)';
         
         if(countdownTimer) clearInterval(countdownTimer);
         ui.countdown.style.display = 'none';
@@ -617,7 +664,7 @@
             ui.ghost.style.height = `${currentGhostH}px`;
 
             // Position Warning Pill dynamically
-            // ui.warning.style.top = `calc(50% + ${currentGhostH / 2 + 30}px)`;
+            ui.warning.style.top = `calc(50% + ${currentGhostH / 2 + 30}px)`;
 
             // --- LEVEL GAUGE ---
             const yawRaw = (nose.x - eyeMidX); 
@@ -672,7 +719,7 @@
                     }
                 } else {
                     alignmentStableFrames = 0;
-                    ui.ghost.style.borderColor = 'rgba(255,255,255,0.5)';
+                    ui.ghost.style.borderColor = 'rgba(255,255,255,0.4)';
                 }
             }
             else if (currentPhase === 1) {
@@ -759,12 +806,12 @@
             } else {
                 clearInterval(countdownTimer);
                 ui.countdown.style.display = 'none';
-                
+               
                 // --- IMMEDIATE FEEDBACK ---
                 ui.countdown.style.display = 'block';
-                ui.countdown.innerText = "Scanning";
-                ui.countdown.style.fontSize = "4rem"; 
-                
+                ui.countdown.innerText = "Analyzing...";
+                ui.countdown.style.fontSize = "2rem"; // Smaller text
+               
                 currentPhase = 3; 
             }
         }, 1000);
